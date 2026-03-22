@@ -1,13 +1,19 @@
-const API = "http://localhost:8000";
+const API = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 export async function fetchStats() {
-  const res = await fetch(`${API}/api/dashboard/stats`);
-  return res.json();
+  try {
+    const res = await fetch(`${API}/api/dashboard/stats`);
+    return res.json();
+  } catch {
+    return { total_caregivers: 0, total_checkins: 0, completed_checkins: 0, urgent_flags: 0, coverage_rate: 0, mood_distribution: {} };
+  }
 }
 
 export async function fetchCheckins() {
-  const res = await fetch(`${API}/api/checkins`);
-  return res.json();
+  try {
+    const res = await fetch(`${API}/api/checkins`);
+    return res.json();
+  } catch { return []; }
 }
 
 export async function fetchCheckinById(id) {
@@ -16,8 +22,10 @@ export async function fetchCheckinById(id) {
 }
 
 export async function fetchCaregivers() {
-  const res = await fetch(`${API}/api/caregivers`);
-  return res.json();
+  try {
+    const res = await fetch(`${API}/api/caregivers`);
+    return res.json();
+  } catch { return []; }
 }
 
 export async function createCaregiver(data) {
